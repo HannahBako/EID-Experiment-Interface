@@ -1,1 +1,1 @@
-{"time": 1665602630604, "event": "fetching example set", "data": []}
+{"time": 1665611066971, "event": "fetching example set", "data": "all"}
