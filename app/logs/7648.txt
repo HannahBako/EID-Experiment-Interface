@@ -1,0 +1,1 @@
+{"time": 1665600022731, "event": "fetching example set", "data": ["nasa", "afforestation"]}

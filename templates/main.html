@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<!-- Split up the screen into two portions for the faceted browising nav and the image grid displays -->
+<div id="pagebody">    
+    <!-- actual page content -->
+    <div class="content">
+        <div class="row">
+            <!-- faceted browsing navigation -->
+            <div class="col s3"> 
+                <div id="browserFrom">
+                    <form action="#" id ="facetedbrowsingform">
+                        <div class="criteriagroup">
+                            <ul class="collapsible">
+                              <!-- Dataset types -->
+                                <li class="active">
+                                  <div class="collapsible-header">Dataset Types</div>
+                                  <div class="collapsible-body">
+                                    <div class="row">
+                                      <div class="col s6">
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="continous" value="continous" />
+                                            <span>Continous</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="nominal" value="nominal" />
+                                            <span>Nominal</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="ordinal" value="ordinal"/>
+                                              <span>Ordinal</span>
+                                            </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="discrete" value="discrete" />
+                                            <span>Discrete</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="range" value="range"/>
+                                              <span>Range</span>
+                                            </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="temporal" value="temporal" />
+                                              <span>Temporal</span>
+                                            </label>
+                                        </p>
+                                      </div>
+                                      <div class="col s6">
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="time series" value="time series" />
+                                            <span>Time Series</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="date" value="date"/>
+                                              <span>Date</span>
+                                            </label>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <!-- Relevant topics -->
+                                <li>
+                                  <div class="collapsible-header">Relevant Topics</div>
+                                  <div class="collapsible-body">
+                                    <div class="row">
+                                      <div class="col s6">
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="nasa" value="nasa" />
+                                            <span>NASA</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="agriculture" value="agriculture"/>
+                                              <span>agriculture</span>
+                                            </label>
+                                        </p>
+                        
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="temperature" value="temperature"/>
+                                              <span>temperature</span>
+                                            </label>
+                                        </p>
+                        
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="afforestation" value="afforestation"/>
+                                              <span>afforestation</span>
+                                            </label>
+                                        </p>
+                                      </div>
+                                      <div class="col s6">
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <!-- Visualization elements -->
+                                <li>
+                                  <div class="collapsible-header">Visualization Elements</div>
+                                  <div class="collapsible-body">
+                                    <div class="row">
+                                      <div class="col s6">
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="line" value="line" />
+                                            <span >Line</span>
+                                          </label>
+                                        </p>
+                      
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="points" value="points"/>
+                                              <span >Points</span>
+                                            </label>
+                                        </p>
+                        
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="bars" value="bars"/>
+                                              <span >Bars</span>
+                                            </label>
+                                        </p>
+                        
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="sankey" value="sankey"/>
+                                              <span >Sankey</span>
+                                            </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="geomap" value="geomap" />
+                                            <span >Geomap</span>
+                                          </label>
+                                        </p>
+                      
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="colors" value="colors"/>
+                                              <span >Colors</span>
+                                            </label>
+                                        </p>
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="area" value="area"/>
+                                            <span >Area</span>
+                                          </label>
+                                        </p>
+                                      </div>
+                                      <div class="col s6">
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="annotations" value="annotations" />
+                                            <span >Annotations</span>
+                                          </label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="density plot" value="density plot"/>
+                                              <span >Density Plot</span>
+                                            </label>
+                                        </p>
+                                        
+                                        <p>
+                                          <label>
+                                            <input type="checkbox" name="diverging" value="diverging" />
+                                            <span >Diverging</span>
+                                          </label>
+                                        </p>
+                      
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="spiral" value="spiral"/>
+                                              <span >Spiral</span>
+                                            </label>
+                                        </p>
+                        
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="bespoke" value="bespoke"/>
+                                              <span >Bespoke</span>
+                                            </label>
+                                        </p>
+                      
+                                        <p>
+                                            <label>
+                                              <input type="checkbox" name="stacked" value="stacked"/>
+                                              <span >Stacked</span>
+                                            </label>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                                <!-- Visualiation tasks -->
+                                <li>
+                                    <div class="collapsible-header">Task</div>
+                                    <div class="collapsible-body">
+                                      <div class="row">
+                                        <div class="col s6">
+                                          <p>
+                                            <label>
+                                              <input type="checkbox" name="trend" value="trend" />
+                                              <span>Trend</span>
+                                            </label>
+                                          </p>
+                        
+                                          <p>
+                                              <label>
+                                                <input type="checkbox" name="comparison" value="comparison"/>
+                                                <span>Comparison</span>
+                                              </label>
+                                          </p>
+                          
+                                          <p>
+                                              <label>
+                                                <input type="checkbox" name="correlation" value="correlation"/>
+                                                <span>Correlation</span>
+                                              </label>
+                                          </p>
+                          
+                                          <p>
+                                              <label>
+                                                <input type="checkbox" name="relationship" value="relationship"/>
+                                                <span>Relationship</span>
+                                              </label>
+                                          </p>
+                                        </div>
+                                        <div class="col s6">
+                                          <p>
+                                            <label>
+                                              <input type="checkbox" name="composition" value="composition" />
+                                              <span>Composition</span>
+                                            </label>
+                                          </p>
+                        
+                                          <p>
+                                              <label>
+                                                <input type="checkbox" name="distribution" value="distribution"/>
+                                                <span>Distribution</span>
+                                              </label>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </li>
+                              </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- search result image cards go here -->
+            <div class="col s9">
+              <!-- <span>Search Results....</span> -->
+              
+              <!-- TODO: submit user data -->
+              <a href="{{url_for('submit')}}" style="float: right;"><button class="btn waves-effect waves-light" type="submit" name="action">Next</button></a>
+               <!-- Modal Trigger -->
+              <a class="waves-effect waves-light btn modal-trigger" href="#modal1" style="float: right; margin-right: 2px;">Instructions</a>
+
+              <div id="selectedterms">
+                  <div class="chips chips-initial"></div>
+              </div>
+              <div id="examplecards">
+              </div>
+          </div>
+        </div>
+    </div>
+
+     <!-- Modal Structure -->
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <!-- experiment task for the user -->
+      <div class="flow-text">
+        <h5>Instructions</h5>
+        {%if '1' in data.condition %}
+          <p>You have been tasked with creating a visual data story for a blog post discussing the effects of global warming on the US atmospheric temperature. 
+              You have been provided with a dataset on average daily temperature recordings from weather stations in the US. 
+              You need to create a centerpiece visualization for the blog post that highlights the following key point: <br>
+              <b><i>
+                  Earth’s temperature has risen by 0.14° Fahrenheit (0.08° Celsius) per decade since 1880, 
+                  but the rate of warming since 1981 is more than twice that: 0.32° F (0.18° C) per decade.
+              </i></b>
+          </p>
+        {%else%} 
+          <p>
+              Palm oil production has been at the forefront of climate talk as a major driver of deforestation. 
+              This has led to drastic changes in consumer behavior as companies and people move away from consuming/using palm oil-based products. 
+              But is this claim true? Is palm oil production any more destructive than other vegetable oil crops being produced? <br>
+              You have been selected to create a visualization that will be submitted to the Iron Viz competition and have been provided with a dataset on: <br>
+              <ol>
+                  <li>The amount of land used to produce various vegetable crops</li>
+                  <li>The expected yield for vegetable oil crops</li>
+                  <li>The drivers for deforestation in Indoesia</li>
+              </ol>
+              Your task is to create a visualization that communicates two key insights:
+              <ul>
+                  <li><i>Only 16% of direct deforestation was driven by palm oil plantations. 
+                      Infact most of the land used replaced by palm oil plantations were previously logged forests or scrubland (land destroyed by fire or other natural elements).</i>
+                  </li>
+
+                  <li>
+                      <i>Compared to other vegetable oil crops, Palm oil has higher yield per hectare of land. Hence requiring less land use to meet global demand.</i>
+                  </li>
+              </ul>
+              Your visualization will be judged based on how novel your design is and how well you communicate the key insights to your audience.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var userdetails={{data|tojson}}
+  </script>
+</div>
+{% endblock %}
