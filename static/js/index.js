@@ -42,20 +42,36 @@ function createExampleCards(examples){
   var div =div = document.createElement('div')
   div.className ="row"
   while (i < examples.length){
+    shortDesc = examples[i].description.split(" ").slice(0,10).join(" ")
     var subdiv = document.createElement('div')
     subdiv.className = "col s12 m6 l3"
     subdiv.innerHTML += '<div class="card">'+
-          '<div class="card-image">'+
-            '<img src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
-          '<span class="card-title"></span>'+
+          '<div class="card-image waves-effect waves-block waves-light">'+
+            '<img class="activator" src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
           '</div>'+
-        // '<div class="card-content">'+
-        //     '<p>Example description:'+examples[i].description+'</p>'+
-        //   '</div>'+
-          '<div class="card-action">'+
-            '<a href="'+examples[i].source+'" target="_blank">Example source</a>'+
+          '<div class="card-content">'+
+            '<span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i></span>'+
+            '<p><a href="'+examples[i].source+'" target="_blank">Example source</a></p>'+
+          '</div>'+
+          '<div class="card-reveal">'+
+            '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>'+
+            '<p>'+examples[i].description+'</p>'+
           '</div>'+
         '</div>'
+        // Old div card with read more/ read less descriptions
+    // subdiv.innerHTML += '<div class="card">'+
+    //       '<div class="card-image">'+
+    //         '<img src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
+    //       '<span class="card-title"></span>'+
+    //       '</div>'+
+    //     '<div class="card-content">'+
+    //         '<span id=desc'+i+' style="display: inline;">'+shortDesc+'<span id="dots">...</span><span id=readMoreBtn'+i+' style="color:orange;" onclick="readMore(this)">Read more</span></span>'+
+    //         '<span id=more'+i+' style="display: none;">'+examples[i].description+'...</span><span id=readlessBtn'+i+' style="color:orange; display:none;" onclick="readMore(this)">Read less</span>'+
+    //       '</div>'+
+    //       '<div class="card-action">'+
+    //         '<a href="'+examples[i].source+'" target="_blank">Example source</a>'+
+    //       '</div>'+
+    //     '</div>'
     div.appendChild(subdiv)
   
     //if fourth element in div then append to examplecards div and then reset.
@@ -73,48 +89,82 @@ function clearEndContent(){
   document.getElementById("thanks").style.display = "none"
 }
 
+function readMore(element){
+  id = element.id.slice(-1)
+  paragraph = document.getElementById("desc"+id)
+  text = document.getElementById("more"+id)
+  readless = document.getElementById("readlessBtn"+id)
+  if (paragraph.style.display != "none"){
+    paragraph.style.display = "none"
+    text.style.display="inline"
+    readless.style.display="inline"
+  }else{
+    text.style.display="none"
+    readless.style.display="none"
+    paragraph.style.display = "inline"
+  }
+}
+
 function initiateChips(data){
-  // set inital placeholder values for chips
-  $('.chips-initial').chips({
-    data: data,
-    autocompleteOptions:{
-      data: {
-        'Agriculture': null,
-        'Investments': null,
-        'Continous': null
-      },
-      limit: Infinity,
-      minLength: 1
-    },
-    onChipDelete: (e,d) =>{
-      chip =d.childNodes[0].textContent
-      var selectedtags = Array()
-      $("input:checkbox[type=checkbox]:checked").each(function(){
-        selectedtags.push($(this).val());
-        //uncheck item
-        if ($(this).val() == chip){
-          $(this).prop("checked", false);
-        }
-        
-      });
-      selectedtags = selectedtags.filter(function(value, index, arr){
-        return value != chip;
-      })
-      console.log(selectedtags)
-      //set chips
-      chips = Array();
-        i=0 
-        while (i < selectedtags.length){
-          chips.push(
-            {
-              tag:selectedtags[i]
+  //fetch tags for autocomplete
+  var tags = [];
+    fetch('/tags')
+    .then((response) => response.json())
+    .then((d) => {
+      tags = d
+       // set inital placeholder values for chips
+      $('.chips-initial').chips({
+        data: data,
+        autocompleteOptions:{
+          data: d,
+          limit: Infinity,
+          minLength: 1
+        },
+        onChipDelete: (e,d) =>{
+          chip =d.childNodes[0].textContent
+          var selectedtags = Array()
+          $("input:checkbox[type=checkbox]:checked").each(function(){
+            selectedtags.push($(this).val());
+            //uncheck item
+            if ($(this).val() == chip){
+              $(this).prop("checked", false);
             }
-          )
-          i++
+            
+          });
+          var chipsData = M.Chips.getInstance($('.chips')).chipsData;
+          chipsData.forEach(e =>{
+            selectedtags.push(e.tag)
+          })
+          selectedtags = selectedtags.filter(function(value, index, arr){
+            return value != chip;
+          })
+          
+          //set chips
+          chips = Array();
+            i=0 
+            while (i < selectedtags.length){
+              chips.push(
+                {
+                  tag:selectedtags[i]
+                }
+              )
+              i++
+            }
+          fetchExamples(selectedtags)
+        },
+        onChipAdd: (e,d) =>{
+          var selectedtags = Array()
+          var chipsData = M.Chips.getInstance($('.chips')).chipsData;
+          chipsData.forEach(e =>{
+            selectedtags.push(e.tag)
+          })
+          fetchExamples(selectedtags)
         }
-      fetchExamples(selectedtags)
-    }
-  });
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+    })
 }
 function fetchExamples(selectedtags){
   log("fetching example set", selectedtags)
@@ -145,7 +195,12 @@ function formSubmission(){
     $("input:checkbox[type=checkbox]:checked").each(function(){
       selectedtags.push($(this).val());
     });
-   
+    var chipsData = M.Chips.getInstance($('.chips')).chipsData;
+    chipsData.forEach(e =>{ 
+      if (!selectedtags.includes(e.tag)){
+        selectedtags.push(e.tag)
+      } 
+    })
     //set chips
     chips = Array();
       i=0 
@@ -157,7 +212,6 @@ function formSubmission(){
         )
         i++
       }
-    console.log(selectedtags)
     initiateChips(chips)
     fetchExamples(selectedtags)
   })
@@ -171,18 +225,27 @@ function initializeModal(){
 }
 function init (){
  
-    $(document).ready(function(){
-      $('.collapsible').collapsible();
+    // $(document).ready(function(){
+    //   $('.collapsible').collapsible();
+    // });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelector('.collapsible');
+      var instances = M.Collapsible.init(elems);
+      instances.open();
+
+      //load all the tags and initialize chips
     });
 
   //initialize modal
   initializeModal()
 
-  //create placeholde chips
+  //create placeholder chips
   formSubmission()
   
   //add all examples
   fetchExamples('all')
+  initiateChips([])
 }
 
 init()

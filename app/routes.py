@@ -47,6 +47,12 @@ def main(id, condition):
 def submit():
     return render_template("end.html")
 
+@app.route('/tags', methods=["GET"])
+def tags():
+    if request.method == "GET":
+        tags = dict.fromkeys(examples.getAllTags())
+        return json.dumps(tags)
+    return json.dumps({'success':False}), 400, {'ContentType':'application/json'} 
 @app.route('/examples', methods=["GET", "POST"])
 def getExamples():
     if request.method == "POST":
@@ -56,7 +62,7 @@ def getExamples():
             return json.dumps([i.__dict__ for i in images])
         images = examples.getImages(data['tags'])
         return json.dumps([i.__dict__ for i in images])
-    return 400
+    return json.dumps({'success':False}), 400, {'ContentType':'application/json'}
 
 @app.route('/log', methods=['POST', 'GET'])
 def log():

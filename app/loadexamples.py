@@ -45,3 +45,5 @@ class Examples:
                     continue
                 examples.append(image)
         return examples
+    def getAllTags(self) -> list:
+        return self.tags.keys()
