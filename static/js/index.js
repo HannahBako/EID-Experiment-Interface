@@ -37,6 +37,10 @@ function createExampleCards(examples){
   while(exampleCards.firstChild){
     exampleCards.removeChild(exampleCards.firstChild);
   }
+
+  if (examples.length ==0){
+    exampleCards.innerHTML = "No results returned for search parameters"
+  }
   //generate the html for each imagecard and append to the examplecards
   i=0
   var div =div = document.createElement('div')

@@ -20,6 +20,7 @@ class Examples:
         self.readTags()
     def readTags(self):
         self.df = pd.read_csv('app/examples_details.csv')
+        print(self.df.head())
         # I need some structure that stores a list of all tags and the example filenames, descriptions and source link for each file in that tag
         for index, row in self.df.iterrows():
             image = Image(row["Filename"], row["Description"], row["sourceLink"])
