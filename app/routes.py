@@ -27,15 +27,21 @@ def task():
     availconditions = ['1a', '1b', '2a', '2b']
     condition =''
     assigned = False
+    print(conditions)
     while not assigned:
         condition = random.choice(availconditions)
-        if conditions[condition] < 4:
+        if conditions[condition] < 8:
             conditions[condition]+=1
             assigned = True
     id = int(random.randint(1000,9999))
     usermaps[id] = condition
-    with open('usermaps.txt', 'w') as f:
-        f.write(json.dumps({"id": id, "condition": condition}))
+    dd = {"id": id, "condition": condition}
+    with open('usermaps.txt', 'a') as f:
+        f.write(json.dumps(dd))
+        f.write("\n")
+    with open("app/logs/"+str(id)+".txt", "a+") as f:
+        d = [dd,]
+        f.write(json.dumps(d))
     return render_template("task.html", data = {"condition":condition, "id":id})
 
 @app.route("/mainexperiment/<int:id>/<condition>/")
@@ -68,7 +74,12 @@ def getExamples():
 def log():
     if request.method == "POST":
         data = request.json
+        print('opening file', data['id'])
+        file =""
+        with open("app/logs/"+str(data['id'])+".txt", "r") as f:
+            file = json.loads(f.read())
+            file.append(data['log'])
         with open("app/logs/"+str(data['id'])+".txt", "w") as f:
-            f.write(json.dumps(data['log']))
+            f.write(json.dumps(file))
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     return json.dumps({'success':False}), 400, {'ContentType':'application/json'} 

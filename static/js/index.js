@@ -51,31 +51,17 @@ function createExampleCards(examples){
     subdiv.className = "col s12 m6 l3"
     subdiv.innerHTML += '<div class="card">'+
           '<div class="card-image waves-effect waves-block waves-light">'+
-            '<img class="activator" src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
+            '<img class="activator" id="'+examples[i].filename+'" src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
           '</div>'+
           '<div class="card-content">'+
-            '<span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i></span>'+
-            '<p><a href="'+examples[i].source+'" target="_blank">Example source</a></p>'+
+            '<span class="card-title activator grey-text text-darken-4"><i class="material-icons right extext" id="'+examples[i].filename+'">more_vert</i></span>'+
+            '<p><a id="'+examples[i].filename+'" href="'+examples[i].source+'" target="_blank">Example source</a></p>'+
           '</div>'+
           '<div class="card-reveal">'+
-            '<span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>'+
+            '<span class="card-title grey-text text-darken-4"><i class="material-icons right extext">close</i></span>'+
             '<p>'+examples[i].description+'</p>'+
           '</div>'+
         '</div>'
-        // Old div card with read more/ read less descriptions
-    // subdiv.innerHTML += '<div class="card">'+
-    //       '<div class="card-image">'+
-    //         '<img src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
-    //       '<span class="card-title"></span>'+
-    //       '</div>'+
-    //     '<div class="card-content">'+
-    //         '<span id=desc'+i+' style="display: inline;">'+shortDesc+'<span id="dots">...</span><span id=readMoreBtn'+i+' style="color:orange;" onclick="readMore(this)">Read more</span></span>'+
-    //         '<span id=more'+i+' style="display: none;">'+examples[i].description+'...</span><span id=readlessBtn'+i+' style="color:orange; display:none;" onclick="readMore(this)">Read less</span>'+
-    //       '</div>'+
-    //       '<div class="card-action">'+
-    //         '<a href="'+examples[i].source+'" target="_blank">Example source</a>'+
-    //       '</div>'+
-    //     '</div>'
     div.appendChild(subdiv)
   
     //if fourth element in div then append to examplecards div and then reset.
@@ -86,6 +72,8 @@ function createExampleCards(examples){
     }
     i++;
   }
+   //add logging for viewed examples
+   logImageViews()
 }
 
 function clearEndContent(){
@@ -227,6 +215,31 @@ function initializeModal(){
   });
        
 }
+
+function logImageViews(){
+  //log hover over image
+  document.querySelectorAll(".activator").forEach(item =>{
+    item.addEventListener("mouseover", (d)=>{
+      log("hover over example", d.target.id)
+    })
+  })
+  
+  //log click on example source
+  document.addEventListener('click', e =>{
+    const origin = e.target.closest('a');
+    if (origin)
+      log("clicked on example source", origin.id);
+  })
+
+  //log click on example description
+  document.querySelectorAll(".extext").forEach(item =>{
+    item.addEventListener("click", (d)=>{
+      if (d.target.id)
+      log("viewed example description", d.target.id);
+    })
+  })
+
+}
 function init (){
  
     // $(document).ready(function(){
@@ -250,6 +263,8 @@ function init (){
   //add all examples
   fetchExamples('all')
   initiateChips([])
+
+ 
 }
 
 init()
