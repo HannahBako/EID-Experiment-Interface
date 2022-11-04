@@ -78,6 +78,10 @@ function createExampleCards(examples){
 function clearEndContent(){
   document.getElementById("wiz").style.display = "block"
   document.getElementById("thanks").style.display = "none"
+  setTimeout((d) =>{
+    window.location ="https://umdsurvey.umd.edu/jfe/form/SV_9QE1EIwCCXCcsQe"
+  }, 0.2*60000)
+  
 }
 
 function readMore(element){
