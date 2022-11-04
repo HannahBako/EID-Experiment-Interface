@@ -74,7 +74,6 @@ def getExamples():
 def log():
     if request.method == "POST":
         data = request.json
-        print('opening file', data['id'])
         file =""
         with open("app/logs/"+str(data['id'])+".txt", "r") as f:
             file = json.loads(f.read())

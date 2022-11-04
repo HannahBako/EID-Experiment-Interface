@@ -1,11 +1,7 @@
 // use this file to populate content in the html.
 
-chips_data = [{
-    tag: 'Climate',
-  }, {
-    tag: 'Agric',
-  }]
 
+var bookmarks = new Set()
 var user_details = {}
 
 function setUserDetails(data){
@@ -49,7 +45,7 @@ function createExampleCards(examples){
     shortDesc = examples[i].description.split(" ").slice(0,10).join(" ")
     var subdiv = document.createElement('div')
     subdiv.className = "col s12 m6 l3"
-    subdiv.innerHTML += '<div class="card">'+
+    subdiv.innerHTML += '<div class="card sticky-action">'+
           '<div class="card-image waves-effect waves-block waves-light">'+
             '<img class="activator" id="'+examples[i].filename+'" src="/static/ExampleFiles/'+examples[i].filename+'" width=250 height=200>'+
           '</div>'+
@@ -60,6 +56,9 @@ function createExampleCards(examples){
           '<div class="card-reveal">'+
             '<span class="card-title grey-text text-darken-4"><i class="material-icons right extext">close</i></span>'+
             '<p>'+examples[i].description+'</p>'+
+          '</div>'+
+          '<div class="card-action">'+
+            '<a href="javascript:void(0)"><i class="material-icons bk" id="bk_'+examples[i].filename+'">bookmark_border</i></a>'+
           '</div>'+
         '</div>'
     div.appendChild(subdiv)
@@ -159,7 +158,7 @@ function initiateChips(data){
     })
 }
 function fetchExamples(selectedtags){
-  log("fetching example set", selectedtags)
+  log("fetching example set", Array(selectedtags).join(","))
    //get images that match tags form backend
    fetch('/examples', {
     method:'POST',
@@ -216,6 +215,19 @@ function initializeModal(){
        
 }
 
+function addBookmark(d){
+  id = d.split("_")[1]
+  if (bookmarks.has(id)){
+    bookmarks.delete(id)
+    document.getElementById(d).innerText="bookmark_border"
+    log("adding bookmark", id)
+  }else{
+    bookmarks.add(id)
+    document.getElementById(d).innerText="bookmark"
+    log("removing bookmark", id)
+  }
+}
+
 function logImageViews(){
   //log hover over image
   document.querySelectorAll(".activator").forEach(item =>{
@@ -239,6 +251,13 @@ function logImageViews(){
     })
   })
 
+  // add onclick for bookmarks
+  document.querySelectorAll('i[class*="bk"]').forEach(item =>{
+    item.addEventListener("click", (d)=>{
+      if (d.target.id)
+       addBookmark(d.target.id)
+    })
+  })
 }
 function init (){
  
