@@ -6,7 +6,7 @@ var user_details = {}
 
 function setUserDetails(data){
   user_details = data
-  console.log(user_details)
+  // console.log(user_details)
 }
  
 function log(userevent,data){
@@ -216,7 +216,56 @@ function initializeModal(){
   $(document).ready(function(){
     $('.modal').modal();
   });
+
+  $(document).ready(function(){
+    $('#bookmarkModal').modal({
+      onOpenStart: function(){
+        log("opened bookmarks", "")
+        bookmarkModal()
+      }
+    });
+  });
        
+}
+function bookmarkModal(){
+  var exampleCards = document.getElementById("bkModalContent")
+  while(exampleCards.firstChild){
+    exampleCards.removeChild(exampleCards.firstChild);
+  }
+
+  // console.log(bookmarks)
+  if (bookmarks.size ==0){
+    exampleCards.innerHTML = "No Bookmarked Examples"
+  }
+
+  i=0
+  bk= Array.from(bookmarks)
+  var div =div = document.createElement('div')
+  div.className ="row"
+  
+  while (i<bk.length){
+    // console.log(bk)
+    var subdiv = document.createElement('div')
+    subdiv.className = "col s12 m6"
+    subdiv.innerHTML += '<div class="card">'+
+          '<div class="card-image">'+
+            '<img id="'+bk[i]+'" src="/static/ExampleFiles/'+bk[i]+'" width=250 height=200>'+
+          '</div>'+
+          '<div class="card-content">'+
+          '</div>'+
+          '<div class="card-action">'+
+            // '<a href="javascript:void(0)"><i class="material-icons bk" id="bk_'+bk[i]+'">bookmark</i></a>'+
+          '</div>'+
+        '</div>'
+    div.appendChild(subdiv)
+    //if fourth element in div then append to examplecards div and then reset.
+    if (div.childElementCount == 2 || i==bk.length-1){
+      exampleCards.appendChild(div)
+      div = document.createElement('div')
+      div.className ="row"
+    }
+    i++;
+  }
 }
 
 function addBookmark(d){
@@ -224,11 +273,11 @@ function addBookmark(d){
   if (bookmarks.has(id)){
     bookmarks.delete(id)
     document.getElementById(d).innerText="bookmark_border"
-    log("adding bookmark", id)
+    log("removing bookmark", id)
   }else{
     bookmarks.add(id)
     document.getElementById(d).innerText="bookmark"
-    log("removing bookmark", id)
+    log("adding bookmark", id)
   }
 }
 
@@ -243,7 +292,7 @@ function logImageViews(){
   //log click on example source
   document.addEventListener('click', e =>{
     const origin = e.target.closest('a');
-    if (origin)
+    if (origin.id)
       log("clicked on example source", origin.id);
   })
 

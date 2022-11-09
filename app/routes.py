@@ -48,6 +48,9 @@ def task():
 def main(id, condition):
     return render_template("main.html", data = {"condition":condition, "id":id})
 
+@app.route("/demo/<int:id>/<condition>/")
+def demo(id, condition):
+    return render_template("demo.html", data = {"condition":condition, "id":id})
 
 @app.route('/submit')
 def submit():
@@ -75,6 +78,7 @@ def log():
     if request.method == "POST":
         data = request.json
         file =""
+        # print(data['log'])
         with open("app/logs/"+str(data['id'])+".txt", "r") as f:
             file = json.loads(f.read())
             file.append(data['log'])
