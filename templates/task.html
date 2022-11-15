@@ -44,48 +44,22 @@
                 {% endif %}
                 <a href="{{url_for('demo', id=data.id, condition=data.condition)}}" style="display: none;" id="proceed"><button class="btn waves-effect waves-light btn-large" type="submit" name="action">Proceed</button></a>
             </div>
-            <div class="col s2">
+            <!-- <div class="col s2">
                 <div id="counter" style="text-align: left; display: none;" class="flow-text">Time left: <span id="timer"></span></div>
-            </div>
+            </div> -->
         </div>
         
         <script>
+            var time =0;
             if ("{{ data.condition }}".includes('b')){
-                document.getElementById("counter").style.display = "inline"
-                //count down timer
-                var currDate = new Date()
-                var countDownDate = currDate.getTime() + 20*60000
-                var x = setInterval(function() {
-
-                // Get today's date and time
-                var now = new Date().getTime();
-
-                // Find the distance between now and the count down date
-                var distance = countDownDate - now;
-
-                // Time calculations for hours, minutes and seconds
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the element with id="demo"
-                document.getElementById("timer").innerHTML =  minutes + ":" + seconds;
-
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                clearInterval(x);
-                    document.getElementById("timer").innerHTML = "00:00";
-                    document.getElementById("timer").style.color ="red";
-                    alert('You have exceeded the time for this section. Please click on the proceed button')
-                }
-                }, 1000);
-                setTimeout((d) =>{
-                    document.getElementById("proceed").style.display = "inline"
-                }, 20*60000)
+               time = 20
             }else{
-                document.getElementById("counter").style.display = "inline"
+                time = 5
+            }
+            document.getElementById("counter").style.display = "inline"
                 //count down timer
                 var currDate = new Date()
-                var countDownDate = currDate.getTime() + 5*60000
+                var countDownDate = currDate.getTime() + time*60000
                 var x = setInterval(function() {
 
                 // Get today's date and time
@@ -106,14 +80,13 @@
                 clearInterval(x);
                     document.getElementById("timer").innerHTML = "00:00";
                     document.getElementById("timer").style.color ="red";
+                    document.getElementById("counter").style.color ="red";
                     alert('You have exceeded the time for this section. Please click on the proceed button')
                 }
                 }, 1000);
                 setTimeout((d) =>{
                     document.getElementById("proceed").style.display = "inline"
-                }, 5*60000)
-            }
-
+                }, time*60000)
             
         </script>
     <!-- </div> -->

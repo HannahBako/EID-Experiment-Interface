@@ -348,7 +348,7 @@
               <!-- <span>Search Results....</span> -->
               
               <!-- TODO: submit user data -->
-              <a href="{{url_for('submit')}}" style="float: right;"><button class="btn waves-effect waves-light" type="submit" name="action">Next</button></a>
+              <a href="{{url_for('submit')}}" style="float: right; display: none;" id="nextButton"><button class="btn waves-effect waves-light" type="submit" name="action">Next</button></a>
               <!-- Modal Trigger -->
               <a class="waves-effect waves-light btn modal-trigger" href="#bookmarkModal" style="float: right; margin-right: 2px;">Bookmarks</a>
                <!-- Modal Trigger -->
@@ -422,7 +422,42 @@
     </div>
   </div>
   <script type="text/javascript">
+
+    //set user details for logging purposes
     var userdetails={{data|tojson}}
+    
+    //update timer clock
+    document.getElementById("counter").style.display = "inline"
+    //count down timer
+    var currDate = new Date()
+    var countDownDate = currDate.getTime() + 20*60000
+    var x = setInterval(function() {
+
+    // Get today's date and time
+    var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now;
+
+    // Time calculations for hours, minutes and seconds
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the result in the element with id="demo"
+    document.getElementById("timer").innerHTML =  minutes + ":" + seconds;
+
+    // If the count down is finished, write some text
+    if (distance < 0) {
+    clearInterval(x);
+        document.getElementById("timer").innerHTML = "00:00";
+        document.getElementById("timer").style.color ="red";
+        document.getElementById("counter").style.color ="red";
+        alert('You have exceeded the time for this section. Please click on the "Next" button')
+    }
+    }, 1000);
+    setTimeout((d) =>{
+        document.getElementById("nextButton").style.display = "inline"
+    }, 20*60000)
   </script>
 </div>
 {% endblock %}

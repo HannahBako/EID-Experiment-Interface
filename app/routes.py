@@ -24,13 +24,15 @@ def hello():
 @app.route("/task")
 def task():
     # randomize participant among four conditions. generate a random identifier for their logs
-    availconditions = ['1a', '1b', '2a', '2b']
+
+    # availconditions = ['1a', '1b', '2a', '2b']
+    availconditions = ['1a', '1b', '2a']
     condition =''
     assigned = False
     print(conditions)
     while not assigned:
         condition = random.choice(availconditions)
-        if conditions[condition] < 8:
+        if conditions[condition] < 1: #TODO: replace with 8 after pilot is complete
             conditions[condition]+=1
             assigned = True
     id = int(random.randint(1000,9999))
@@ -39,7 +41,7 @@ def task():
     with open('usermaps.txt', 'a') as f:
         f.write(json.dumps(dd))
         f.write("\n")
-    with open("app/logs/"+str(id)+".txt", "a+") as f:
+    with open("app/logs/"+str(id)+".txt", "w") as f:
         d = [dd,]
         f.write(json.dumps(d))
     return render_template("task.html", data = {"condition":condition, "id":id})
