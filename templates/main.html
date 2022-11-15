@@ -426,11 +426,19 @@
     //set user details for logging purposes
     var userdetails={{data|tojson}}
     
+    
+    var time =0;
+    if ("{{ data.condition }}".includes('b')){
+        time = 20
+    }else{
+        time = 35
+    }
+    console.log(time)
     //update timer clock
     document.getElementById("counter").style.display = "inline"
     //count down timer
     var currDate = new Date()
-    var countDownDate = currDate.getTime() + 20*60000
+    var countDownDate = currDate.getTime() + time*60000
     var x = setInterval(function() {
 
     // Get today's date and time
@@ -457,7 +465,7 @@
     }, 1000);
     setTimeout((d) =>{
         document.getElementById("nextButton").style.display = "inline"
-    }, 20*60000)
+    }, time*60000)
   </script>
 </div>
 {% endblock %}
