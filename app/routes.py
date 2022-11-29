@@ -50,6 +50,11 @@ def task():
 def main(id, condition):
     return render_template("main.html", data = {"condition":condition, "id":id})
 
+@app.route("/scratch/<filename>/")
+def scratch(filename):
+    image = examples.getImage(filename)
+    return render_template("scratch.html", image = image.__dict__)
+
 @app.route("/demo/<int:id>/<condition>/")
 def demo(id, condition):
     return render_template("demo.html", data = {"condition":condition, "id":id})

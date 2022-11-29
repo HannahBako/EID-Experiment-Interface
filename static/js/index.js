@@ -51,7 +51,8 @@ function createExampleCards(examples){
           '</div>'+
           '<div class="card-content">'+
             '<span class="card-title activator grey-text text-darken-4"><i class="material-icons right extext" id="'+examples[i].filename+'">more_vert</i></span>'+
-            '<p><a id="'+examples[i].filename+'" href="/static/ExampleFiles/'+examples[i].filename+'" target="_blank">Example source</a></p>'+
+            // '<p><a id="'+examples[i].filename+'" href="/static/ExampleFiles/'+examples[i].filename+'" target="_blank">Example source</a></p>'+
+            '<p><a id="'+examples[i].filename+'" href="/scratch/'+examples[i].filename+'/" target="_blank">Example source</a></p>'+
           '</div>'+
           '<div class="card-reveal">'+
             '<span class="card-title grey-text text-darken-4"><i class="material-icons right extext">close</i></span>'+

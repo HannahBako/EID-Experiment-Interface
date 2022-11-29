@@ -48,3 +48,10 @@ class Examples:
         return examples
     def getAllTags(self) -> list:
         return self.tags.keys()
+
+    def getImage(self, id):
+        images = self.getAllImages()
+        for i in images:
+            if i.filename == id:
+                return i
+        return ""
