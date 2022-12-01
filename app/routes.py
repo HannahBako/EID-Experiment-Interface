@@ -32,7 +32,7 @@ def task():
     print(conditions)
     while not assigned:
         condition = random.choice(availconditions)
-        if conditions[condition] < 1: #TODO: replace with 8 after pilot is complete
+        if conditions[condition] < 8: #TODO: replace with 8 after pilot is complete
             conditions[condition]+=1
             assigned = True
     id = int(random.randint(1000,9999))
@@ -75,9 +75,10 @@ def getExamples():
         data = request.json
         if data['tags'] == 'all':
             images = examples.getAllImages()
-            return json.dumps([i.__dict__ for i in images])
+            return json.dumps(images)
         images = examples.getImages(data['tags'])
-        return json.dumps([i.__dict__ for i in images])
+        print(images)
+        return json.dumps(images)
     return json.dumps({'success':False}), 400, {'ContentType':'application/json'}
 
 @app.route('/log', methods=['POST', 'GET'])

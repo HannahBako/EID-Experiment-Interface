@@ -2,6 +2,7 @@
 
 
 var bookmarks = new Set()
+var oldtags = []
 var user_details = {}
 
 function setUserDetails(data){
@@ -43,6 +44,14 @@ function createExampleCards(examples){
   div.className ="row"
   while (i < examples.length){
     shortDesc = examples[i].description.split(" ").slice(0,10).join(" ")
+    tags = examples[i].tag
+    var tagdiv = ''
+    tags.forEach((d) =>{
+      tagdiv += '<div class="search-chip">'+
+        d
+        +'<i class=" material-icons"></i>'+
+      '</div>'
+    })
     var subdiv = document.createElement('div')
     subdiv.className = "col s12 m6 l3"
     subdiv.innerHTML += '<div class="card sticky-action">'+
@@ -60,8 +69,10 @@ function createExampleCards(examples){
           '</div>'+
           '<div class="card-action">'+
             '<a href="javascript:void(0)"><i class="material-icons bk" id="bk_'+examples[i].filename+'">bookmark_border</i></a>'+
-          '</div>'+
+            tagdiv+
+          '</div>'+        
         '</div>'
+      
     div.appendChild(subdiv)
   
     //if fourth element in div then append to examplecards div and then reset.
@@ -146,6 +157,7 @@ function initiateChips(data){
               )
               i++
             }
+          oldtags = selectedtags
           fetchExamples(selectedtags)
         },
         onChipAdd: (e,d) =>{
@@ -154,6 +166,15 @@ function initiateChips(data){
           chipsData.forEach(e =>{
             selectedtags.push(e.tag)
           })
+
+          $("input:checkbox[type=checkbox]").each(function(){
+            //check item
+            if (selectedtags.includes($(this).val())){
+              $(this).prop("checked", true);
+            }
+            
+          });
+          oldtags = selectedtags
           fetchExamples(selectedtags)
         }
       });
@@ -186,16 +207,25 @@ function fetchExamples(selectedtags){
 function formSubmission(){
   var selectedtags
   var form = document.querySelector("form")
-  form.addEventListener('change', () =>{
+  form.addEventListener('change', (e) =>{
     selectedtags = Array();
     $("input:checkbox[type=checkbox]:checked").each(function(){
       selectedtags.push($(this).val());
     });
+    var deletedTag
+    if (oldtags.length > selectedtags.length){
+      deletedTag = getDifference(selectedtags, oldtags)[0]
+    }
     var chipsData = M.Chips.getInstance($('.chips')).chipsData;
     chipsData.forEach(e =>{ 
-      if (!selectedtags.includes(e.tag)){
-        selectedtags.push(e.tag)
-      } 
+      if (e.tag == deletedTag){
+        
+      }else{
+        if (!selectedtags.includes(e.tag)){
+          selectedtags.push(e.tag)
+        }
+      }
+       
     })
     //set chips
     chips = Array();
@@ -208,9 +238,15 @@ function formSubmission(){
         )
         i++
       }
+    console.log('selected chips', chips)
+    oldtags = selectedtags
     initiateChips(chips)
     fetchExamples(selectedtags)
   })
+}
+
+function getDifference(setA, setB) {
+  return setB.filter(x => !setA.includes(x));
 }
 
 function initializeModal(){

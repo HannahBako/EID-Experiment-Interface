@@ -1,18 +1,23 @@
 from collections import defaultdict
 from typing import List
 import pandas as pd
+import copy
+import random
 
 class Image:
-    def __init__(self, filename:str, description:str, source:str):
+    def __init__(self, filename:str, description:str, source:str, tags:list):
         self.filename = filename
         self.description = description
         self.source = source
+        self.tag = tags
     def getFilename(self) -> str:
         return self.filename
     def getDescription(self) -> str:
         return self.description
     def getSource(self) -> str:
         return self.source
+    def getMatchingTags(self, tags) -> str:
+        return set(self.tag).intersection(set(tags))
 
 class Examples:
     def __init__(self):
@@ -23,7 +28,7 @@ class Examples:
         
         # I need some structure that stores a list of all tags and the example filenames, descriptions and source link for each file in that tag
         for index, row in self.df.iterrows():
-            image = Image(row["Filename"], row["Description"], row["sourceLink"])
+            image = Image(row["Filename"], row["Description"], row["sourceLink"], [r.strip().lower() for r in row["Tags"].split(",")])
             for tag in row["Tags"].split(","):
                 self.tags[tag.strip().lower()].append(image)
         #just sanity checking.
@@ -36,22 +41,27 @@ class Examples:
             for image in self.tags[t]:
                 if image in examples:
                     continue
-                examples.append(image)
+                else:
+                    img = copy.deepcopy(image)
+                    img = img.__dict__
+                    img["tag"] = list(image.getMatchingTags(tag))
+                    examples.append(img)
+        random.shuffle(examples)
         return examples
+
     def getAllImages(self) -> list:
         examples =[]
         for t in self.tags.keys():
             for image in self.tags[t]: 
                 if image in examples:
                     continue
-                examples.append(image)
+                else:
+                    img = copy.deepcopy(image)
+                    img = img.__dict__
+                    img["tag"] = []
+                    examples.append(img)
+        random.shuffle(examples)
         return examples
+   
     def getAllTags(self) -> list:
         return self.tags.keys()
-
-    def getImage(self, id):
-        images = self.getAllImages()
-        for i in images:
-            if i.filename == id:
-                return i
-        return ""
