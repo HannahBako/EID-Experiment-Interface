@@ -129,6 +129,7 @@ function initiateChips(data){
         },
         onChipDelete: (e,d) =>{
           chip =d.childNodes[0].textContent
+          log("removing tag", chip)
           var selectedtags = Array()
           $("input:checkbox[type=checkbox]:checked").each(function(){
             selectedtags.push($(this).val());
@@ -174,6 +175,9 @@ function initiateChips(data){
             }
             
           });
+          
+          log('adding tag', getDifference(oldtags, selectedtags)[0])
+          
           oldtags = selectedtags
           fetchExamples(selectedtags)
         }
@@ -216,10 +220,13 @@ function formSubmission(){
     if (oldtags.length > selectedtags.length){
       deletedTag = getDifference(selectedtags, oldtags)[0]
     }
+    if (oldtags.length < selectedtags.length){
+      log('adding tag', getDifference(oldtags, selectedtags)[0])
+    }
     var chipsData = M.Chips.getInstance($('.chips')).chipsData;
     chipsData.forEach(e =>{ 
       if (e.tag == deletedTag){
-        
+        log('removing tag', e.tag)
       }else{
         if (!selectedtags.includes(e.tag)){
           selectedtags.push(e.tag)
