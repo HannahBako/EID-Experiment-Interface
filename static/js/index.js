@@ -61,7 +61,7 @@ function createExampleCards(examples){
           '<div class="card-content">'+
             '<span class="card-title activator grey-text text-darken-4"><i class="material-icons right extext" id="'+examples[i].filename+'">more_vert</i></span>'+
             // '<p><a id="'+examples[i].filename+'" href="/static/ExampleFiles/'+examples[i].filename+'" target="_blank">Example source</a></p>'+
-            '<p><a id="'+examples[i].filename+'" href="/scratch/'+examples[i].filename+'/" target="_blank">Example source</a></p>'+
+            '<p><a id="'+examples[i].filename+'" onclick=expandExample("'+String(examples[i].filename)+'") target="_blank">Example source</a></p>'+
           '</div>'+
           '<div class="card-reveal">'+
             '<span class="card-title grey-text text-darken-4"><i class="material-icons right extext">close</i></span>'+
@@ -110,6 +110,12 @@ function readMore(element){
     readless.style.display="none"
     paragraph.style.display = "inline"
   }
+}
+
+function expandExample(filename){
+  log("clicked on example source", filename);
+  console.log('clicked on example source', filename)
+  window.open("/scratch/"+filename+"/", "_blank");
 }
 
 function initiateChips(data){
@@ -333,12 +339,13 @@ function logImageViews(){
     })
   })
   
-  //log click on example source
-  document.addEventListener('click', e =>{
-    const origin = e.target.closest('a');
-    if (origin.id)
-      log("clicked on example source", origin.id);
-  })
+  // //log click on example source
+  // document.addEventListener('click', e =>{
+  //   const origin = e.target.closest('a');
+  //   if (origin.id)
+  //     console.log("expand example", origin.id)
+  //     log("clicked on example source", origin.id);
+  // })
 
   //log click on example description
   document.querySelectorAll(".extext").forEach(item =>{

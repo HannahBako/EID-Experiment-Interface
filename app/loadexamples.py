@@ -65,3 +65,9 @@ class Examples:
    
     def getAllTags(self) -> list:
         return self.tags.keys()
+    def getImage(self,filename):
+        for t in self.tags.keys():
+            for image in self.tags[t]: 
+                if image.filename == filename:
+                    return image
+        return None
