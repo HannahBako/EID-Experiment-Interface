@@ -4,7 +4,7 @@ from app.loadexamples import Examples
 from collections import defaultdict
 import json
 import random
-
+import os
 
 
 global examples 
@@ -21,15 +21,37 @@ usermaps = defaultdict(str)
 def hello():
     return render_template("index.html", title="home")
 
+def loadUsers():
+    print('loading usermaps.txt')
+    #if usermaps has been created and exists then upload the user data to keep track of conditions
+    if os.path.getsize('usermaps.txt') > 0:
+        #read the file
+        file = ""
+        with open("usermaps.txt", "r") as f:
+            file = json.loads(f.read())
+        #set conditions and existing user
+        #reset counts to make sure we're not over counting
+        cond = defaultdict(int)
+        for user in file:
+            usermaps[user['id']] = user['condition']
+            cond[user['condition']] +=1
+        global conditions
+        conditions = cond
+        return True
+    return False
 @app.route("/task")
 def task():
     # randomize participant among four conditions. generate a random identifier for their logs
+    availconditions = ['1a', '1b', '2a', '2b']
 
-    # availconditions = ['1a', '1b', '2a', '2b']
-    availconditions = ['1a', '1b', '2a']
+    #check usermaps.txt was loaded
+    loadedFile = loadUsers()
+    if loadedFile:
+        print('usermaps.txt successfully loaded...')
+    else:
+        print('Unable to load usermaps.txt...')
     condition =''
     assigned = False
-    print(conditions)
     while not assigned:
         condition = random.choice(availconditions)
         if conditions[condition] < 8: #TODO: replace with 8 after pilot is complete
@@ -38,9 +60,18 @@ def task():
     id = int(random.randint(1000,9999))
     usermaps[id] = condition
     dd = {"id": id, "condition": condition}
-    with open('usermaps.txt', 'a') as f:
-        f.write(json.dumps(dd))
-        f.write("\n")
+    print(dd)
+    print(conditions)
+    data = ''
+    if loadedFile:
+        with open('usermaps.txt', "r") as f:
+            data = json.loads(f.read())
+            data.append(dd)
+    else:
+        data =[dd,]
+
+    with open('usermaps.txt', 'w') as f:
+            f.write(json.dumps(data))
     with open("app/logs/"+str(id)+".txt", "w") as f:
         d = [dd,]
         f.write(json.dumps(d))
