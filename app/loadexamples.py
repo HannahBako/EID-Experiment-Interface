@@ -37,29 +37,34 @@ class Examples:
 
     def getImages(self, tag) -> list:
         examples = []
+        examples_ids =set()
         for t in tag:
             for image in self.tags[t]:
-                if image in examples:
+                if image.filename in examples_ids:
                     continue
                 else:
                     img = copy.deepcopy(image)
                     img = img.__dict__
                     img["tag"] = list(image.getMatchingTags(tag))
                     examples.append(img)
+                    examples_ids.add(img["filename"])
         random.shuffle(examples)
         return examples
 
     def getAllImages(self) -> list:
         examples =[]
+        examples_ids =set()
         for t in self.tags.keys():
             for image in self.tags[t]: 
-                if image in examples:
+                if image.filename in examples_ids:
                     continue
                 else:
                     img = copy.deepcopy(image)
                     img = img.__dict__
                     img["tag"] = []
                     examples.append(img)
+                    examples_ids.add(img["filename"])
+        
         random.shuffle(examples)
         return examples
    

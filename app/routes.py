@@ -108,7 +108,7 @@ def getExamples():
             images = examples.getAllImages()
             return json.dumps(images)
         images = examples.getImages(data['tags'])
-        print(images)
+        
         return json.dumps(images)
     return json.dumps({'success':False}), 400, {'ContentType':'application/json'}
 
