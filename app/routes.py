@@ -53,7 +53,7 @@ def task():
     condition =''
     assigned = False
     while not assigned:
-        condition = random.choice(availconditions)
+        condition = random.SystemRandom().choice(availconditions)
         if conditions[condition] < 8: #TODO: replace with 8 after pilot is complete
             conditions[condition]+=1
             assigned = True
