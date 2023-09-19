@@ -42,33 +42,34 @@ def loadUsers():
 @app.route("/task")
 def task():
     # randomize participant among four conditions. generate a random identifier for their logs
-    availconditions = ['1a', '1b', '2a', '2b']
+    # availconditions = ['1a', '1b', '2a', '2b']
+    condition  = '1a' #comment this out if deploying on server.
 
     #check usermaps.txt was loaded
-    loadedFile = loadUsers()
-    if loadedFile:
-        print('usermaps.txt successfully loaded...')
-    else:
-        print('Unable to load usermaps.txt...')
-    condition =''
-    assigned = False
-    while not assigned:
-        condition = random.SystemRandom().choice(availconditions)
-        if conditions[condition] < 8: #TODO: replace with 8 after pilot is complete
-            conditions[condition]+=1
-            assigned = True
+    # loadedFile = loadUsers()
+    # if loadedFile:
+    #     print('usermaps.txt successfully loaded...')
+    # else:
+    #     print('Unable to load usermaps.txt...')
+    # condition =''
+    # assigned = False
+    # while not assigned:
+    #     condition = random.SystemRandom().choice(availconditions)
+    #     if conditions[condition] < 8: #TODO: replace with 8 after pilot is complete
+    #         conditions[condition]+=1
+    #         assigned = True
     id = int(random.randint(1000,9999))
     usermaps[id] = condition
     dd = {"id": id, "condition": condition}
     print(dd)
     print(conditions)
-    data = ''
-    if loadedFile:
-        with open('usermaps.txt', "r") as f:
-            data = json.loads(f.read())
-            data.append(dd)
-    else:
-        data =[dd,]
+    # data = ''
+    # if loadedFile:
+    #     with open('usermaps.txt', "r") as f:
+    #         data = json.loads(f.read())
+    #         data.append(dd)
+    # else:
+    data =[dd,]
 
     with open('usermaps.txt', 'w') as f:
             f.write(json.dumps(data))

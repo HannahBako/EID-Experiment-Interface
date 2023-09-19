@@ -29,7 +29,7 @@
                         </ul> 
                     </p>
                     <p><b>You have 5 minutes to explore the dataset</b></p>
-                    <a href="https://docs.google.com/spreadsheets/d/1fJ2EYkzggCZ_l710kRktpi9tJ5FU50cYL-PtT5whq-o/edit?usp=sharing" target="_blank"><button class="btn waves-effect waves-light btn-large" type="submit" name="action">View Dataset</button></a>  
+                    <a href="/static/Datasets/1895-2022-US atmospheric temperature.xlsx" target="_blank"><button class="btn waves-effect waves-light btn-large" type="submit" name="action"  >View Dataset</button></a>  
                 {%else%} 
                     <p style="text-align: left;">
                         Palm oil production has been at the forefront of climate talk as a major driver of deforestation. 
@@ -45,8 +45,8 @@
                     <p style="text-align: left;">Your task is to create a visualization that communicates two key insights: <br>
                         <ul style="text-align: left;">
                             <li style="list-style-type: disc !important">
-                                <b><i>Only a small percentage of direct deforestation was driven by palm oil plantations. 
-                                    Infact most of the land replaced by palm oil plantations were previously logged forests or scrubland (land destroyed by fire or other natural elements)</i></b>
+                                <b><i>Palm oil plantations alone are not the main drivers of deforestation in Indonesia. </i></b>
+                                    <!-- Infact most of the land replaced by palm oil plantations were previously logged forests or scrubland (land destroyed by fire or other natural elements) -->
                             </li>
                             <li style="list-style-type: disc !important">
                                 <b><i>Compared to other vegetable oil crops, Palm oil has higher yield per hectare of land. Hence requiring less land use to meet global demand.</i></b>
@@ -55,7 +55,7 @@
                     </p>
                     <p style="text-align: left;">Your visualization will be judged based on how novel your design is and how well you communicate the key insights to your audience.</p>
                     <p><b>You have 5 minutes to explore the dataset</b></p>
-                    <a href="https://docs.google.com/spreadsheets/d/17p7Qs5lJMjGrvwEYL8B5AwA_svP_uest0bbCb7MoZnQ/edit?usp=sharing" target="_blank"><button class="btn waves-effect waves-light btn-large" type="submit" name="action">View Dataset</button></a>  
+                    <a href="/static/Datasets/Palm-oil-production.xlsx" target="_blank"><button class="btn waves-effect waves-light btn-large" type="submit" name="action">View Dataset</button></a>  
                 {% endif %}
                 <a href="{{url_for('demo', id=data.id, condition=data.condition)}}" style="display: none;" id="proceed"><button class="btn waves-effect waves-light btn-large" type="submit" name="action">Proceed</button></a>
             </div>
