@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, redirect
 from app import app
 from app.loadexamples import Examples
 from collections import defaultdict
@@ -19,7 +19,8 @@ usermaps = defaultdict(str)
 @app.route("/")
 @app.route("/index")
 def hello():
-    return render_template("index.html", title="home")
+    # return render_template("index.html", title="home")
+    return redirect("/main")
 
 def loadUsers():
     print('loading usermaps.txt')
@@ -39,6 +40,7 @@ def loadUsers():
         conditions = cond
         return True
     return False
+
 @app.route("/task")
 def task():
     # randomize participant among four conditions. generate a random identifier for their logs
@@ -78,9 +80,10 @@ def task():
         f.write(json.dumps(d))
     return render_template("task.html", data = {"condition":condition, "id":id})
 
-@app.route("/mainexperiment/<int:id>/<condition>/")
-def main(id, condition):
-    return render_template("main.html", data = {"condition":condition, "id":id})
+@app.route("/main")
+def main():
+    id="logs"
+    return render_template("main.html", data = {"id":id})
 
 @app.route("/scratch/<filename>/")
 def scratch(filename):
@@ -101,6 +104,7 @@ def tags():
         tags = dict.fromkeys(examples.getAllTags())
         return json.dumps(tags)
     return json.dumps({'success':False}), 400, {'ContentType':'application/json'} 
+
 @app.route('/examples', methods=["GET", "POST"])
 def getExamples():
     if request.method == "POST":
@@ -118,7 +122,7 @@ def log():
     if request.method == "POST":
         data = request.json
         file =""
-        # print(data['log'])
+        # # print(data['log'])
         with open("app/logs/"+str(data['id'])+".txt", "r") as f:
             file = json.loads(f.read())
             file.append(data['log'])

@@ -1,14 +1,6 @@
 // use this file to populate content in the html.
-
-
 var bookmarks = new Set()
 var oldtags = []
-var user_details = {}
-
-function setUserDetails(data){
-  user_details = data
-  // console.log(user_details)
-}
  
 function log(userevent,data){
   fetch('/log',{
@@ -17,11 +9,12 @@ function log(userevent,data){
     'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      "id": userdetails.id,
+      "id": userdetails.id ? userdetails.id: null,
       'log':{
         "time": Date.now(),
         "event": userevent,
-        "data": data
+        "data": data,
+        "id": userdetails.id ? userdetails.id: null
       }
     })
   }).catch((error) => {
@@ -53,6 +46,7 @@ function createExampleCards(examples){
       '</div>'
     })
     var subdiv = document.createElement('div')
+    source = ""
     subdiv.className = "col s12 m6 l3"
     subdiv.innerHTML += '<div class="card sticky-action">'+
           '<div class="card-image waves-effect waves-block waves-light">'+
@@ -61,7 +55,8 @@ function createExampleCards(examples){
           '<div class="card-content">'+
             '<span class="card-title activator grey-text text-darken-4"><i class="material-icons right extext" id="'+examples[i].filename+'">more_vert</i></span>'+
             // '<p><a id="'+examples[i].filename+'" href="/static/ExampleFiles/'+examples[i].filename+'" target="_blank">Example source</a></p>'+
-            '<p><a id="'+examples[i].filename+'" onclick=expandExample("'+String(examples[i].filename)+'") target="_blank">Example source</a></p>'+
+            // '<p><a id="'+examples[i].filename+'" onclick=expandExample("'+String(examples[i].filename)+'") target="_blank">Example source</a></p>'+
+            '<p><a id="'+examples[i].filename+'" onclick=expandExample("'+String(examples[i].filename)+'","'+String(examples[i].source)+'") target="_blank">Example source</a></p>'+
           '</div>'+
           '<div class="card-reveal">'+
             '<span class="card-title grey-text text-darken-4"><i class="material-icons right extext">close</i></span>'+
@@ -112,10 +107,11 @@ function readMore(element){
   }
 }
 
-function expandExample(filename){
+function expandExample(filename, link){
   log("clicked on example source", filename);
-  console.log('clicked on example source', filename)
-  window.open("/scratch/"+filename+"/", "_blank");
+  // console.log('clicked on example source', filename)
+  // window.open("/scratch/"+filename+"/", "_blank");
+  window.open(link, "_blank")
 }
 
 function initiateChips(data){
